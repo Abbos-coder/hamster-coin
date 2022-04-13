@@ -2,24 +2,28 @@
   <div class="generator">
     <img src="/image-1.png" alt="bg-img" class="generator__bg" />
     <div class="generator__body">
-      <div class="generator__header" v-if="$store.state.usa">
+      <div class="generator__header" v-if="lang_type == 'usa' || ''">
         YOU CAN SHARE THE TWEET DIRECTLY BY CLICKING THE TWEET BUTTON. YOU DO
         NOT NEED TO ADD ANY TEXT.
       </div>
-      <div class="generator__header" v-if="$store.state.turk">
+      <div class="generator__header" v-else>
         Tweetle BUTONUNA BASARAK DOĞRUDAN TWEETİ PAYLAŞABİLİRSİNİZ. HERHANGİ BİR
         METİN EKLEMENİZE GEREK YOKTUR.
       </div>
       <div class="generator__text">
         {{ random_text }}
-        <v-divider class="mt-6"></v-divider>
+        <v-divider class="my-6"></v-divider>
 
         <v-btn
           rounded
           color="primary"
-          to="https://twitter.com/share?ref_src=twsrc%5Etfw"
-          class="text-capitalize mt-6 mr-3 tweet twitter-share-button"
+          href="https://twitter.com/share?ref_src=twsrc%5Etfw"
+          class="text-capitalize tweet twitter-share-button mt-n4"
           data-show-count="false"
+          data-size="large"
+          :data-text="random_text"
+          target="_blank"
+          small
         >
           <v-icon class="mr-1">mdi-twitter</v-icon>
           Tweet
@@ -28,19 +32,11 @@
           v-if="$store.state.usa"
           rounded
           color="success"
-          class="text-capitalize mt-6 refresh"
+          class="text-capitalize refresh mt-n4 ml-3"
           @click="refresh"
+          small
         >
-          Refresh
-        </v-btn>
-        <v-btn
-          v-if="$store.state.turk"
-          rounded
-          color="success"
-          class="text-capitalize mt-6 refresh"
-          @click="refresh"
-        >
-          Yenile
+          {{ lang_type == "usa" || "" ? "Refresh" : "Yenile" }}
         </v-btn>
       </div>
     </div>
@@ -54,11 +50,13 @@ export default {
       script: [
         {
           src: "https://platform.twitter.com/widgets.js",
+          body: true,
         },
       ],
     };
   },
   data: () => ({
+    lang_type: "",
     random_text: "",
     usa_data: [
       "@_hamster_coin #Hamstercoin I admire the team Hamster Community",
@@ -973,30 +971,19 @@ export default {
   }),
   methods: {
     refresh() {
-      if (this.$store.state.usa) {
-        const data = this.usa_data;
-        this.random_text = data[Math.floor(Math.random() * data.length)];
-      } else {
-        const data = this.turk_data;
-        this.random_text = data[Math.floor(Math.random() * data.length)];
-      }
-    },
-  },
-  computed: {
-    storeLang() {
-      return this.$store.state.usa;
+      location.reload();
     },
   },
   mounted() {
-    if (this.storeLang) {
+    const lang_name = document.cookie;
+    this.lang_type = lang_name;
+    if (lang_name === "usa") {
       const data = this.usa_data;
       this.random_text = data[Math.floor(Math.random() * data.length)];
     } else {
       const data = this.turk_data;
       this.random_text = data[Math.floor(Math.random() * data.length)];
     }
-    const fs = require("fs");
-    console.log(fs);
   },
 };
 </script>
