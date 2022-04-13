@@ -3,8 +3,8 @@ import colors from "vuetify/es5/util/colors";
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: "%s - humster",
-    title: "humster",
+    // titleTemplate: "%s - humster",
+    title: "HamsterCoin",
     htmlAttrs: {
       lang: "en",
     },
@@ -14,7 +14,7 @@ export default {
       { hid: "description", name: "description", content: "" },
       { name: "format-detection", content: "telephone=no" },
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    link: [{ rel: "icon", type: "image/x-icon", href: "/logo.svg" }],
     script: [
       {
         src: "https://kit.fontawesome.com/64202546c6.js",
