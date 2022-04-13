@@ -24,10 +24,14 @@ export default {
     changeLangUsa() {
       this.$store.state.usa = true;
       this.$store.state.turk = false;
+      document.cookie = "usa";
+      location.reload();
     },
     changeLangTurk() {
       this.$store.state.turk = true;
       this.$store.state.usa = false;
+      document.cookie = "turk";
+      location.reload();
     },
   },
 };
