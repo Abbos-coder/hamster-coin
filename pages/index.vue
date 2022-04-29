@@ -13,7 +13,6 @@
       <div class="generator__text">
         {{ random_text }}
         <v-divider class="my-6"></v-divider>
-
         <v-btn
           rounded
           color="primary"
@@ -29,7 +28,6 @@
           Tweet
         </v-btn>
         <v-btn
-          v-if="$store.state.usa"
           rounded
           color="success"
           class="text-capitalize refresh mt-n4 ml-3"
@@ -38,6 +36,18 @@
         >
           {{ lang_type == "usa" || "" ? "Refresh" : "Yenile" }}
         </v-btn>
+        <v-row>
+          <v-btn
+            rounded
+            color="primary"
+            class="text-capitalize mt-n6 mr-3 ml-auto mb-4"
+            small
+            :href="`https://twitter.com/intent/tweet?in_reply_to=${tweet_id}`"
+            target="_blank"
+          >
+            {{ lang_type == "usa" || "" ? "Reply" : "Cevapla" }}
+          </v-btn>
+        </v-row>
       </div>
     </div>
   </div>
@@ -58,6 +68,7 @@ export default {
   data: () => ({
     lang_type: "",
     random_text: "",
+    tweet_id: "463440424141459456",
     usa_data: [
       "@_hamster_coin #Hamstercoin I admire the team Hamster Community",
       "@_hamster_coin #Hamstercoin  we trust the team Hamster Community",
