@@ -72,6 +72,7 @@ export default {
 
 <style lang="scss" scoped>
 .footer {
+  margin-top: 30px;
   @media (max-width: 760px) {
     border-top: 0;
   }

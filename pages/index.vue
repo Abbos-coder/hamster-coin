@@ -1,53 +1,52 @@
 <template>
-  <div class="generator">
-    <img src="/image-1.png" alt="bg-img" class="generator__bg" />
-    <div class="generator__body">
-      <div class="generator__header" v-if="lang_type == 'usa' || ''">
-        YOU CAN SHARE THE TWEET DIRECTLY BY CLICKING THE TWEET BUTTON. YOU DO
-        NOT NEED TO ADD ANY TEXT.
-      </div>
-      <div class="generator__header" v-else>
-        Tweetle BUTONUNA BASARAK DOĞRUDAN TWEETİ PAYLAŞABİLİRSİNİZ. HERHANGİ BİR
-        METİN EKLEMENİZE GEREK YOKTUR.
-      </div>
-      <div class="generator__text">
-        {{ random_text }}
-        <v-divider class="my-6"></v-divider>
-        <v-btn
-          rounded
-          color="primary"
-          href="https://twitter.com/share?ref_src=twsrc%5Etfw"
-          class="text-capitalize tweet twitter-share-button mt-n4"
-          data-show-count="false"
-          data-size="large"
-          :data-text="random_text"
-          target="_blank"
-          small
-        >
-          <v-icon class="mr-1">mdi-twitter</v-icon>
-          Tweet
-        </v-btn>
-        <v-btn
-          rounded
-          color="success"
-          class="text-capitalize refresh mt-n4 ml-3"
-          @click="refresh"
-          small
-        >
-          {{ lang_type == "usa" || "" ? "Refresh" : "Yenile" }}
-        </v-btn>
-        <v-row>
+  <div>
+    <div class="generator">
+      <img src="/image-1.png" alt="bg-img" class="generator__bg" />
+      <div class="generator__body">
+        <div class="generator__header" v-if="lang_type == 'usa' || ''">
+          YOU CAN SHARE THE TWEET DIRECTLY BY CLICKING THE TWEET BUTTON. YOU DO
+          NOT NEED TO ADD ANY TEXT.
+        </div>
+        <div class="generator__header" v-else>
+          Tweetle BUTONUNA BASARAK DOĞRUDAN TWEETİ PAYLAŞABİLİRSİNİZ. HERHANGİ
+          BİR METİN EKLEMENİZE GEREK YOKTUR.
+        </div>
+        <div class="generator__text">
+          {{ random_text }}
+          <v-divider class="my-6"></v-divider>
           <v-btn
             rounded
             color="primary"
-            class="text-capitalize mt-n6 mr-3 ml-auto mb-4"
-            small
-            :href="`https://twitter.com/intent/tweet?in_reply_to=${tweet_id}`"
+            href="https://twitter.com/share?ref_src=twsrc%5Etfw"
+            class="text-capitalize tweet twitter-share-button mt-n4"
+            data-show-count="false"
+            data-size="large"
+            :data-text="random_text"
             target="_blank"
+            small
           >
-            {{ lang_type == "usa" || "" ? "Reply" : "Cevapla" }}
+            <v-icon class="mr-1">mdi-twitter</v-icon>
+            Tweet
           </v-btn>
-        </v-row>
+          <v-btn
+            rounded
+            color="success"
+            class="text-capitalize refresh mt-n4 ml-3"
+            @click="refresh"
+            small
+          >
+            {{ lang_type == "usa" || "" ? "Refresh" : "Yenile" }}
+          </v-btn>
+        </div>
+      </div>
+    </div>
+
+    <div class="tweets-list mt-16 mb-16">
+      <div v-for="tweet in tweet_url" :key="tweet.id" class="block">
+        <blockquote class="twitter-tweet">
+          <p lang="en" dir="ltr"></p>
+          <a :href="`${tweet.url}`"></a>
+        </blockquote>
       </div>
     </div>
   </div>
@@ -55,6 +54,12 @@
 
 <script>
 export default {
+  async asyncData({ $axios }) {
+    const tweet_url = await $axios.$get(
+      "https://8917-84-54-76-133.ngrok.io/tweets/"
+    );
+    return { tweet_url };
+  },
   head() {
     return {
       script: [
@@ -66,9 +71,9 @@ export default {
     };
   },
   data: () => ({
+    tweet_url: "",
     lang_type: "",
     random_text: "",
-    tweet_id: "463440424141459456",
     usa_data: [
       "@_hamster_coin #Hamstercoin I admire the team Hamster Community",
       "@_hamster_coin #Hamstercoin  we trust the team Hamster Community",
@@ -1000,6 +1005,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tweets-list {
+  column-count: 3;
+  column-gap: 15px;
+  @media (max-width: 1200px) {
+    column-count: 2;
+  }
+  @media (max-width: 768px) {
+    column-count: 2;
+  }
+  @media (max-width: 414px) {
+    column-count: 1;
+  }
+}
+.block {
+  margin: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  break-inside: avoid;
+}
+
+.row {
+  @media (max-width: 768px) {
+    margin-left: 0 !important;
+  }
+}
 .generator {
   @media (max-width: 760px) {
     flex-wrap: wrap-reverse;
@@ -1007,7 +1037,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 90vh;
+  min-height: 55vh;
   &__body {
     width: 900px;
     background-color: #1e1e1e;
@@ -1034,6 +1064,9 @@ export default {
   &__bg {
     @media (max-width: 760px) {
       margin-top: -180px;
+    }
+    @media (max-width: 414px) {
+      display: none;
     }
     width: 300px;
     margin-right: 20px;
